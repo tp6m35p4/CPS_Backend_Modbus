@@ -1,5 +1,5 @@
 import os
 CONNECTINFO = {
-    'host': '127.0.0.1',
-    'port': 10200
+    'host': '140.118.196.54',
+    'port': 504
 }

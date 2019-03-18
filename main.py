@@ -3,6 +3,7 @@ from services.modbus import ModbusClass as Modbus
 from configs.modbusConfig import CONNECTINFO
 from services.verify import verification
 from configs.commandConfig import COMMAND
+from configs.profile import PROFILE
 app = Flask(__name__)
 
 modbus = Modbus(CONNECTINFO['host'], CONNECTINFO['port'])
@@ -24,7 +25,14 @@ print(CONNECTINFO['host'], CONNECTINFO['port'])
 #         return jsonify(msg="success")
 #     except Exception as e:
 #         return jsonify(msg=str(e))
+@app.route('/')
+def index():
+    return jsonify(msg="alive")
 
+@app.route('/profile')
+def profile():
+    return jsonify(PROFILE)
+    
 @app.route('/registers')
 @verification
 def getRegi():

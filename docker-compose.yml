@@ -14,7 +14,7 @@ services:
 
   store2:
     container_name: store2
-    image: tp6m35p4/modbus_microservices:tag
+    image: tp6m35p4/modbus_microservices:lastest
     restart: always
     environment:
       - FLASK_APP=main.py
@@ -25,7 +25,7 @@ services:
 
   agv:
     container_name: agv
-    image: tp6m35p4/modbus_microservices:tag
+    image: tp6m35p4/modbus_microservices:lastest
     restart: always
     environment:
       - FLASK_APP=main.py
