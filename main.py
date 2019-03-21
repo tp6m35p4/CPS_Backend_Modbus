@@ -49,6 +49,8 @@ def command(command=None):
         try:
             if modbus.writeToSlave(modbus.addSerialNum(request.json['orderId'], COMMAND[command])):
                 return jsonify(msg="success")
+            else:
+                return jsonify(msg="modbus not connect")
         except Exception as e:
             return jsonify(msg=str(e))
 

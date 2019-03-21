@@ -13,6 +13,8 @@ class ModbusClass():
         # count = 5
         if self.c.open():
             print("connect success")
+        else:
+            print("connect failed")
 
         print("start reading threading")
         readThread = threading.Thread(target=self.readFromSlaveLoop)
@@ -21,8 +23,10 @@ class ModbusClass():
     def connection(f):
         def checkConnection(self, *args, **kwargs):
             while not self.c.is_open():
+                self.connectLock.acquire()
                 self.c.open()
                 print("reconnecting")
+                self.connectLock.release()
                 if self.c.is_open():
                     print("reconnected")
                     break
@@ -46,14 +50,14 @@ class ModbusClass():
             try:
                 t = self.c.read_holding_registers(0, 10)
                 self.registers = {i: t[i] for i in range(0, len(t))}
-                # print(self.registers)
+                print(self.registers)
             except:
                 self.registers = tempR
             # print("end reading")
         self.regiLock.release()
         self.connectLock.release()
         
-        time.sleep(2)
+        time.sleep(1)
 
     def writeToSlave(self, writeDict):
         self.connectLock.acquire()
@@ -61,8 +65,9 @@ class ModbusClass():
             for k, v in writeDict.items():
                 self.c.write_single_register(k, v)
             print("write success")
+            return True
         self.connectLock.release()
-        return True
+        return False
 
     # def getGoodsFromAGV(self, orderId):
     #     self.writeToSlave(self.addSerialNum(orderId, COMMAND['TakeGoodsToAGV']))
